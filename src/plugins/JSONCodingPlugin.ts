@@ -291,7 +291,8 @@ function toIvarAssignment(supportsValueSemantics:boolean, attribute:ObjectSpec.A
   return '_' + attribute.name + ' = ' + decoded;
 }
 
-function dictionaryToInstanceInitializer(supportsValueSemantics:boolean, attributes:ObjectSpec.Attribute[]){
+function dictionaryToInstanceInitializer(
+  supportsValueSemantics:boolean, attributes:ObjectSpec.Attribute[]){
   const result = [
     'if ((self = [super init])) {'
   ].concat(attributes.map(FunctionUtils.pApplyf2(supportsValueSemantics, toIvarAssignment)).map(StringUtils.indent(2)))
@@ -302,7 +303,9 @@ function dictionaryToInstanceInitializer(supportsValueSemantics:boolean, attribu
   return result;
 }
 
-function dictionaryToInstanceMethod(supportsValueSemantics:boolean, attributes:ObjectSpec.Attribute[]):ObjC.Method {
+function dictionaryToInstanceMethod(
+  supportsValueSemantics:boolean,
+  attributes:ObjectSpec.Attribute[]):ObjC.Method {
   return {
     preprocessors: [],
     belongsToProtocol: Maybe.Just<string>('NSString'),

@@ -33,5 +33,6 @@ export const VALUE_OBJECT_DEFAULT_CONFIG = {
     'init-new-unavailable',
     'subclassing-restricted',
     'use-cpp',
+    'JSONCodingPlugin',
   ),
 };

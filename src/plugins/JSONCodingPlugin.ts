@@ -272,7 +272,7 @@ function safeUnwrapDecodingStatement(parsingFunction, decodingStatement): string
   return unwrapped;
 }
 
-function toIvarAssignment(supportsValueSemantics:boolean, attribute:ObjectSpec.Attribute):string {
+function toIvarAssignment(supportsValueSemantics:boolean, attribute:ObjectSpec.Attribute) {
   const codeableAttribute:Coding.CodeableAttribute = Coding.codingAttributeForValueAttribute(attribute);
   const codingStatements:CodingUtils.CodingStatements = CodingUtils.codingStatementsForType(codeableAttribute.type);
 
@@ -291,7 +291,7 @@ function toIvarAssignment(supportsValueSemantics:boolean, attribute:ObjectSpec.A
   return '_' + attribute.name + ' = ' + decoded;
 }
 
-function dictionaryToInstanceInitializer(supportsValueSemantics:boolean, attributes:ObjectSpec.Attribute[]):string[] {
+function dictionaryToInstanceInitializer(supportsValueSemantics:boolean, attributes:ObjectSpec.Attribute[]){
   const result = [
     'if ((self = [super init])) {'
   ].concat(attributes.map(FunctionUtils.pApplyf2(supportsValueSemantics, toIvarAssignment)).map(StringUtils.indent(2)))
@@ -388,9 +388,11 @@ export function createPlugin():ObjectSpec.Plugin {
       return [];
     },
     instanceMethods: function(objectType:ObjectSpec.Type):ObjC.Method[] {
-      const supportsValueSemantics:boolean = ObjectSpecUtils.typeSupportsValueObjectSemantics(objectType);
+      const supportsValueSemantics:boolean =
+      ObjectSpecUtils.typeSupportsValueObjectSemantics(objectType);
       return [instanceToDictionaryMethod(objectType.attributes),
-              dictionaryToInstanceMethod(supportsValueSemantics, objectType.attributes)];
+              dictionaryToInstanceMethod(supportsValueSemantics,
+                objectType.attributes)];
     },
     properties: function(objectType:ObjectSpec.Type):ObjC.Property[] {
       return [];

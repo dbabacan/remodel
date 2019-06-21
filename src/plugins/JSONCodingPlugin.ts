@@ -51,7 +51,7 @@ function originalValueGenerator(attributeName: string): string {
   return attributeName;
 }
 
-function dictionaryParsingFunction(attribute:ObjectSpec.Attribute) {
+function dictionaryParsingFunction(attribute:ObjectSpec.Attribute):string {
   const iVarString:string = ObjectSpecCodeUtils.ivarForAttribute(attribute);
   const type:ObjC.Type = ObjectSpecCodeUtils.computeTypeOfAttribute(attribute);
   const defaultParsingFunction =  {
@@ -292,7 +292,7 @@ function toIvarAssignment(supportsValueSemantics:boolean, attribute:ObjectSpec.A
 }
 
 function dictionaryToInstanceInitializer(
-  supportsValueSemantics:boolean, attributes:ObjectSpec.Attribute[]){
+  supportsValueSemantics, attributes){
   const result = [
     'if ((self = [super init])) {'
   ].concat(attributes.map(FunctionUtils.pApplyf2(supportsValueSemantics, toIvarAssignment)).map(StringUtils.indent(2)))
@@ -404,7 +404,7 @@ export function createPlugin():ObjectSpec.Plugin {
     staticConstants: function(objectType:ObjectSpec.Type):ObjC.Constant[] {
       return [];
     },
-    validationErrors: function(objectType:ObjectSpec.Type):Error.Error[] {
+    validationErrors: function(objectTyp) {
       return objectType.attributes.filter(
         doesValueAttributeContainAnUnsupportedType).map(
           FunctionUtils.pApplyf2(objectType, valueAttributeToUnsupportedTypeError));
